@@ -69,3 +69,5 @@ https://devcenter.heroku.com/articles/getting-started-with-rails7
  1075  vi README.md
  1076  history >> README.md
  1077  view README.md
+
+ Trouble pushing to github
