@@ -23,3 +23,5 @@ test:
 production:
   <<: *default
   database: my_app_heroku_production 
+  username: my_app_heroku
+  password: <%= ENV["MYAPP_DATABASE_PASSWORD"] %>
