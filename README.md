@@ -71,3 +71,5 @@ https://devcenter.heroku.com/articles/getting-started-with-rails7
  1077  view README.md
 
  Trouble pushing to github
+ 
+ Sign-up ed for postgres heroku.
