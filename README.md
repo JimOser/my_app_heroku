@@ -73,3 +73,13 @@ https://devcenter.heroku.com/articles/getting-started-with-rails7
  Trouble pushing to github
  
  Sign-up ed for postgres heroku.
+
+ https://devcenter.heroku.com/articles/connecting-heroku-postgres#connecting-in-ruby
+
+ 1064  vi config/database.yml
+ 1065  git status
+ 1066  git add .
+ 1067  git commit
+ 1068  git push heroku
+ 1069  heroku run rake db:migrate
+ 1070  heroku run rake db:seed
