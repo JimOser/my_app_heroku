@@ -111,7 +111,10 @@ GEM
     drb (2.2.3)
     erb (5.0.2)
     erubi (1.13.1)
+    ffi (1.17.2)
+    ffi (1.17.2-aarch64-linux-gnu)
     ffi (1.17.2-arm64-darwin)
+    ffi (1.17.2-x86_64-linux-gnu)
     globalid (1.2.1)
       activesupport (>= 6.1)
     i18n (1.14.7)
@@ -172,6 +175,10 @@ GEM
       racc (~> 1.4)
     nokogiri (1.18.9-x86_64-linux-gnu)
       racc (~> 1.4)
+    pg (1.6.1)
+    pg (1.6.1-aarch64-linux)
+    pg (1.6.1-arm64-darwin)
+    pg (1.6.1-x86_64-linux)
     pp (0.6.2)
       prettyprint
     prettyprint (0.2.0)
@@ -258,11 +265,6 @@ GEM
       actionpack (>= 6.1)
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
-    sqlite3 (2.7.3)
-      mini_portile2 (~> 2.8.0)
-    sqlite3 (2.7.3-aarch64-linux-gnu)
-    sqlite3 (2.7.3-arm64-darwin)
-    sqlite3 (2.7.3-x86_64-linux-gnu)
     stringio (3.1.7)
     thor (1.4.0)
     tilt (2.6.1)
@@ -297,13 +299,13 @@ DEPENDENCIES
   capybara
   debug
   jbuilder
+  pg
   puma (>= 5.0)
   rails (~> 7.1.5, >= 7.1.5.1)
   rails_admin (~> 3.1)
   sassc-rails
   selenium-webdriver
   sprockets-rails
-  sqlite3 (>= 1.4)
   tzinfo-data
   web-console
 
