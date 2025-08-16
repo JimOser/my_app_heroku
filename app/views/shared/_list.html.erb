@@ -1,0 +1,14 @@
+<%# Asegura que collection nunca sea nil %>
+<% collection ||= [] %>
+
+<ul>
+  <% collection.each do |item| %>
+    <li>
+      <%= link_to item.send(display_method), item %>
+      <% if local_assigns[:extra_info].present? %>
+        - <%= extra_info.call(item) %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
+

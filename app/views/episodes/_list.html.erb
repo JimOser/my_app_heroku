@@ -1,0 +1,10 @@
+<% episodes ||= [] %>
+
+<ul>
+  <% episodes.each do |ep| %>
+    <li>
+      Episode <%= ep.number %>: <%= ep.title %>
+      (<%= link_to "YouTube", ep.youtube_url, target: "_blank" %>)
+    </li>
+  <% end %>
+</ul>

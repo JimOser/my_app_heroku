@@ -1,0 +1,5 @@
+<h1>People</h1>
+<%= link_to 'New Person', new_person_path %>
+
+<%= render 'shared/list', collection: @people, display_method: :name, extra_info: ->(p){ display_roles(p) } %>
+

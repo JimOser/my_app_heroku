@@ -1,0 +1,21 @@
+<%= form_with(model: @book) do |f| %>
+  <%= render 'shared/errors', object: @book %>
+
+  <%= f.label :title %>
+  <%= f.text_field :title %><br>
+
+  <%= f.label :url %>
+  <%= f.text_field :url %><br>
+
+  <%= f.label :published_on %>
+  <%= f.date_field :published_on %><br>
+
+  <%= f.label :person_id, "Author" %>
+  <%= f.collection_select :person_id, Person.all, :id, :name %><br>
+
+  <%= f.label :status %>
+  <%= f.select :status, Book.statuses.keys.map { |s| [s.humanize, s] } %><br>
+
+  <%= f.submit %>
+<% end %>
+

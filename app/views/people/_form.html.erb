@@ -1,0 +1,17 @@
+<%= form_with(model: @person) do |f| %>
+  <%= render 'shared/errors', object: @person %>
+
+  <%= f.label :name %>
+  <%= f.text_field :name %><br>
+
+  <%= f.label :bio %>
+  <%= f.text_area :bio %><br>
+
+  <%= f.label :roles %><br>
+  <% Role.all.each do |role| %>
+    <%= check_box_tag "person[role_ids][]", role.id, @person.roles.include?(role) %>
+    <%= role.name.humanize %><br>
+  <% end %>
+
+  <%= f.submit %>
+<% end %>

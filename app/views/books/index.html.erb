@@ -1,0 +1,5 @@
+<h1>Books</h1>
+<%= link_to 'New Book', new_book_path %>
+
+<%= render 'shared/list', collection: @books, display_method: :title, extra_info: ->(b){ "#{display_person_link(b.person)} - #{b.status}" } %>
+
