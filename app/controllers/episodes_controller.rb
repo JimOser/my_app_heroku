@@ -1,30 +1,33 @@
 class EpisodesController < ApplicationController
+  before_action :set_podcast
   before_action :set_episode, only: %i[show edit update destroy]
 
   def index
-    @episodes = Episode.all
+    @episodes = @podcast.episodes
   end
 
-  def show; end
+  def show
+  end
 
   def new
-    @episode = Episode.new
+    @episode = @podcast.episodes.build
   end
 
   def create
-    @episode = Episode.new(episode_params)
+    @episode = @podcast.episodes.build(episode_params)
     if @episode.save
-      redirect_to @episode, notice: "Episode created successfully."
+      redirect_to [@podcast, @episode], notice: 'Episode was successfully created.'
     else
       render :new
     end
   end
 
-  def edit; end
+  def edit
+  end
 
   def update
     if @episode.update(episode_params)
-      redirect_to @episode, notice: "Episode updated successfully."
+      redirect_to [@podcast, @episode], notice: 'Episode was successfully updated.'
     else
       render :edit
     end
@@ -32,17 +35,21 @@ class EpisodesController < ApplicationController
 
   def destroy
     @episode.destroy
-    redirect_to episodes_path, notice: "Episode deleted successfully."
+    redirect_to podcast_episodes_path(@podcast), notice: 'Episode was successfully destroyed.'
   end
 
   private
 
+  def set_podcast
+    @podcast = Podcast.find(params[:podcast_id])
+  end
+
   def set_episode
-    @episode = Episode.find(params[:id])
+    @episode = @podcast.episodes.find(params[:id])
   end
 
   def episode_params
-    params.require(:episode).permit(:podcast_id, :number, :title, :url, :youtube_url, :released_on)
+    params.require(:episode).permit(:title, :number, :released_on, :url, :youtube_url)
   end
 end
 

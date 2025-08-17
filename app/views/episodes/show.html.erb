@@ -1,5 +1,25 @@
-<h1>Episodes#show</h1>
-<p>Find me in app/views/episodes/show.html.erb</p>
-<h2>Episodes</h2>
-<%= render 'episodes/list', locals: { episodes: @podcast.episodes } %>
+<h1><%= @episode.title %></h1>
+
+<p>
+  <strong>Number:</strong>
+  <%= @episode.number %>
+</p>
+
+<p>
+  <strong>Released On:</strong>
+  <%= @episode.released_on %>
+</p>
+
+<p>
+  <strong>URL:</strong>
+  <%= link_to @episode.url, @episode.url if @episode.url.present? %>
+</p>
+
+<p>
+  <strong>YouTube:</strong>
+  <%= link_to @episode.youtube_url, @episode.youtube_url if @episode.youtube_url.present? %>
+</p>
+
+<%= link_to 'Edit', edit_podcast_episode_path(@podcast, @episode) %> |
+<%= link_to 'Back', podcast_episodes_path(@podcast) %>
 

@@ -1,62 +1,55 @@
 puts "➡️ Seeding Roles..."
-ROLE_NAMES = %w[author singer host].freeze
-ROLE_NAMES.each do |role_name|
+roles = %w[author singer host]
+roles.each do |role_name|
   Role.find_or_create_by!(name: role_name)
 end
 
 puts "➡️ Creating People..."
-walter = Person.find_or_create_by!(name: "Walter Freiburg") do |p|
-  p.bio = "Writer and podcaster"
-end
-
-puts "➡️ Assigning Roles to Walter..."
-# Author (main_author)
-PeopleRole.find_or_create_by!(person: walter, role: Role.find_by!(name: "author")) do |pr|
-  pr.main_author = true
-end
-# Host
-PeopleRole.find_or_create_by!(person: walter, role: Role.find_by!(name: "host")) do |pr|
-  pr.main_author = false
-end
-# Singer
-PeopleRole.find_or_create_by!(person: walter, role: Role.find_by!(name: "singer")) do |pr|
-  pr.main_author = false
-end
+walter = Person.find_or_create_by!(name: "Walter Freiburg", bio: "Writer and podcaster")
+walter.roles = [Role.find_by!(name: "author"), Role.find_by!(name: "host")]
+walter.save!
 
 puts "➡️ Creating Books..."
 Book.find_or_create_by!(title: "Rails and Beyond") do |book|
-  book.url = "https://walterfreiburg.com/rails"
-  book.published_on = Date.new(2023, 5, 1)
   book.author = walter
+  book.url = "https://walterfreiburg.com/rails"
+  book.published_on = Date.parse("2023-05-01")
   book.status = :reading
 end
 
 puts "➡️ Creating Podcasts..."
-podcast = Podcast.find_or_create_by!(title: "Tech Talks with Walter") do |p|
-  p.person = walter
-  p.description = "Conversations about programming and technology"
+tech_talks = Podcast.find_or_create_by!(title: "Tech Talks with Walter", person: walter) do |podcast|
+  podcast.description = "Conversations about programming and technology"
 end
 
 puts "➡️ Creating Episodes..."
-Episode.find_or_create_by!(podcast: podcast, number: 1) do |ep|
-  ep.title = "Rails 8 Deep Dive"
-  ep.url = "https://example.com/ep1"
-  ep.youtube_url = "https://youtube.com/ep1"
-  ep.released_on = Date.new(2024, 1, 1)
+Episode.find_or_create_by!(podcast: tech_talks, number: 1) do |episode|
+  episode.title = "Rails Deep Dive"
+  episode.url = "https://example.com/ep1"
+  episode.youtube_url = "https://youtube.com/ep1"
+  episode.released_on = Date.parse("2024-01-01")
+end
+
+Episode.find_or_create_by!(podcast: tech_talks, number: 2) do |episode|
+  episode.title = "Ruby Magic Tricks"
+  episode.released_on = Date.parse("2024-02-01")
 end
 
 puts "➡️ Creating Singers..."
-adele = Singer.find_or_create_by!(name: "Adele") do |s|
-  s.bio = "English singer and songwriter"
-end
+adele = Person.find_or_create_by!(name: "Adele", bio: "Famous singer")
+adele.roles = [Role.find_by!(name: "singer")]
+adele.save!
 
 puts "➡️ Creating Songs..."
-Song.find_or_create_by!(title: "Hello") do |song|
-  song.singer = adele
-  song.released_on = Date.new(2015, 10, 23)
+Song.find_or_create_by!(title: "Hello", person: adele) do |song|
+  song.released_on = Date.parse("2015-10-23")
   song.youtube_url = "https://youtube.com/hello"
-  song.spotify_url = "https://open.spotify.com/track/hello"
+  song.spotify_url = "https://spotify.com/hello"
 end
 
-puts "✅ Seeds loaded successfully!"
+Song.find_or_create_by!(title: "Rolling in the Deep", person: adele) do |song|
+  song.released_on = Date.parse("2010-11-29")
+end
+
+puts "✅ Seeding complete!"
 

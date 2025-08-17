@@ -1,2 +1,6 @@
-<h1>Episodes#new</h1>
-<p>Find me in app/views/episodes/new.html.erb</p>
+<h1>New Episode</h1>
+
+<%= render 'form', episode: @episode, podcast: @podcast %>
+
+<%= link_to 'Back', podcast_episodes_path(@podcast) %>
+
