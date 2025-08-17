@@ -1,15 +1,8 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
-  title: MyString
-  url: MyString
-  published_on: 2025-08-16
-  person: one
-  status: 1
-
-two:
-  title: MyString
-  url: MyString
-  published_on: 2025-08-16
-  person: two
-  status: 1
+  title: Rails Guide
+  url: http://example.com/rails_guide
+  published_on: 2025-01-01
+  author: one   # maps to people(:one) automatically
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>

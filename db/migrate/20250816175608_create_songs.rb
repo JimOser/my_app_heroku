@@ -5,7 +5,7 @@ class CreateSongs < ActiveRecord::Migration[7.1]
       t.date :released_on
       t.string :youtube_url
       t.string :spotify_url
-      t.references :person, null: false, foreign_key: true
+      t.references :singer, null: false, foreign_key: true
 
       t.timestamps
     end

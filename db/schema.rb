@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_08_16_175625) do
+ActiveRecord::Schema[7.1].define(version: 2025_08_17_031106) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -18,11 +18,11 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_16_175625) do
     t.string "title"
     t.string "url"
     t.date "published_on"
-    t.bigint "person_id", null: false
+    t.bigint "author_id", null: false
     t.integer "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["person_id"], name: "index_books_on_person_id"
+    t.index ["author_id"], name: "index_books_on_author_id"
   end
 
   create_table "episodes", force: :cascade do |t|
@@ -47,8 +47,10 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_16_175625) do
   create_table "people_roles", force: :cascade do |t|
     t.bigint "person_id", null: false
     t.bigint "role_id", null: false
+    t.boolean "main_author", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["person_id", "role_id"], name: "index_people_roles_on_person_id_and_role_id", unique: true
     t.index ["person_id"], name: "index_people_roles_on_person_id"
     t.index ["role_id"], name: "index_people_roles_on_role_id"
   end
@@ -85,21 +87,28 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_16_175625) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "singers", force: :cascade do |t|
+    t.string "name"
+    t.text "bio"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "songs", force: :cascade do |t|
     t.string "title"
     t.date "released_on"
     t.string "youtube_url"
     t.string "spotify_url"
-    t.bigint "person_id", null: false
+    t.bigint "singer_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["person_id"], name: "index_songs_on_person_id"
+    t.index ["singer_id"], name: "index_songs_on_singer_id"
   end
 
-  add_foreign_key "books", "people"
+  add_foreign_key "books", "people", column: "author_id"
   add_foreign_key "episodes", "podcasts"
   add_foreign_key "people_roles", "people"
   add_foreign_key "people_roles", "roles"
   add_foreign_key "podcasts", "people"
-  add_foreign_key "songs", "people"
+  add_foreign_key "songs", "singers"
 end

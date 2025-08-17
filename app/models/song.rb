@@ -1,3 +1,3 @@
 class Song < ApplicationRecord
-  belongs_to :person
+  belongs_to :singer
 end

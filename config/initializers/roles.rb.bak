@@ -1,0 +1,14 @@
+# Define role names as a constant
+ROLE_NAMES = %w[author singer host].freeze
+
+# Seed roles only if the database exists and the table is ready
+begin
+  if ActiveRecord::Base.connection.data_source_exists?('roles')
+    ROLE_NAMES.each do |role_name|
+      Role.find_or_create_by!(name: role_name)
+    end
+  end
+rescue ActiveRecord::NoDatabaseError, ActiveRecord::StatementInvalid
+  # Database doesn't exist yet; skip role seeding
+end
+

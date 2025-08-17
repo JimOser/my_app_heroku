@@ -1,17 +1,8 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
   podcast: one
   number: 1
-  title: MyString
-  url: MyString
-  youtube_url: MyString
-  released_on: 2025-08-16
-
-two:
-  podcast: two
-  number: 1
-  title: MyString
-  url: MyString
-  youtube_url: MyString
-  released_on: 2025-08-16
+  title: Getting Started
+  url: http://example.com/episode1
+  youtube_url: http://youtube.com/episode1
+  released_on: 2025-01-01
