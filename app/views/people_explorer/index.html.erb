@@ -1,0 +1,136 @@
+<%# Mobile-first for production; roomy grid for development %>
+<main class="pe-page <%= Rails.env.development? ? 'pe-dev' : 'pe-prod' %>">
+  <header class="pe-header">
+    <h1>People Explorer</h1>
+
+    <div class="pe-controls">
+      <label for="jump-person">Jump to person</label>
+      <select id="jump-person">
+        <option value="">— Select —</option>
+        <% @people.each do |p| %>
+          <option value="person-<%= p.id %>"><%= p.name %></option>
+        <% end %>
+      </select>
+    </div>
+
+    <% unless Rails.env.development? %>
+      <p class="pe-note">Viewing only (production). Editing tools are hidden.</p>
+    <% else %>
+      <p class="pe-note">Development mode: inline editing is enabled.</p>
+    <% end %>
+  </header>
+
+  <section class="pe-grid">
+    <% @people.each do |person| %>
+      <article id="person-<%= person.id %>" class="pe-card pe-person">
+        <header class="pe-card-header">
+          <h2><%= person.name %></h2>
+          <% if person.bio.present? %>
+            <p class="pe-subtle"><%= person.bio %></p>
+          <% end %>
+        </header>
+
+        <%# ---- Books ---- %>
+        <% if person.respond_to?(:books) %>
+          <details class="pe-section" open>
+            <summary>Books (<%= person.books.size %>)</summary>
+            <div class="pe-list">
+              <% person.books.each do |book| %>
+                <div class="pe-item pe-book">
+                  <%= render "edit_or_show",
+                             record: book,
+                             fields: {
+                               title: :string,
+                               url: :url,
+                               published_on: :date,
+                               status: :string
+                             } %>
+                </div>
+              <% end %>
+              <% if Rails.env.development? && person.books.empty? %>
+                <p class="pe-empty">No books yet.</p>
+              <% end %>
+            </div>
+          </details>
+        <% end %>
+
+        <%# ---- Podcasts (and Episodes) ---- %>
+        <% if person.respond_to?(:podcasts) %>
+          <details class="pe-section">
+            <summary>Podcasts (<%= person.podcasts.size %>)</summary>
+            <div class="pe-list">
+              <% person.podcasts.each do |podcast| %>
+                <div class="pe-item pe-podcast">
+                  <%= render "edit_or_show",
+                             record: podcast,
+                             fields: {
+                               title: :string,
+                               description: :text
+                             } %>
+
+                  <% if podcast.respond_to?(:episodes) %>
+                    <details class="pe-subsection">
+                      <summary>Episodes (<%= podcast.episodes.size %>)</summary>
+                      <div class="pe-sublist">
+                        <% podcast.episodes.each do |ep| %>
+                          <div class="pe-subitem pe-episode">
+                            <%= render "edit_or_show",
+                                       record: ep,
+                                       fields: {
+                                         number: :string,
+                                         title: :string,
+                                         url: :url,
+                                         youtube_url: :url,
+                                         released_on: :date
+                                       } %>
+                          </div>
+                        <% end %>
+                      </div>
+                    </details>
+                  <% end %>
+                </div>
+              <% end %>
+              <% if Rails.env.development? && person.podcasts.empty? %>
+                <p class="pe-empty">No podcasts yet.</p>
+              <% end %>
+            </div>
+          </details>
+        <% end %>
+
+        <%# ---- Songs ---- %>
+        <% if person.respond_to?(:songs) %>
+          <details class="pe-section">
+            <summary>Songs (<%= person.songs.size %>)</summary>
+            <div class="pe-list">
+              <% person.songs.each do |song| %>
+                <div class="pe-item pe-song">
+                  <%= render "edit_or_show",
+                             record: song,
+                             fields: {
+                               title: :string,
+                               released_on: :date,
+                               youtube_url: :url,
+                               spotify_url: :url
+                             } %>
+                </div>
+              <% end %>
+              <% if Rails.env.development? && person.songs.empty? %>
+                <p class="pe-empty">No songs yet.</p>
+              <% end %>
+            </div>
+          </details>
+        <% end %>
+      </article>
+    <% end %>
+  </section>
+</main>
+
+<script>
+  // Simple dropdown “jump to person”
+  document.addEventListener("change", function (e) {
+    if (e.target && e.target.id === "jump-person" && e.target.value) {
+      location.hash = e.target.value;
+    }
+  });
+</script>
+

@@ -16,4 +16,10 @@ Rails.application.routes.draw do
     resources :episodes
   end
   resources :songs
+
+  #ChatGPT
+  # People Explorer (read-only in production; editable in development)
+  get  "/people_explorer",            to: "people_explorer#index",  as: :people_explorer
+  patch "/people_explorer/:type/:id", to: "people_explorer#update", as: :people_explorer_update
+
 end

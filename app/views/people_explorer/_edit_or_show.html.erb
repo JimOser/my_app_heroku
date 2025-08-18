@@ -1,0 +1,50 @@
+<%# locals: record, fields (hash of attr => :string|:text|:date|:url) %>
+
+<% if Rails.env.development? %>
+  <%= form_with url: people_explorer_update_path(type: record.model_name.name, id: record.id),
+                method: :patch,
+                class: "pe-form" do %>
+
+    <% fields.each do |attr, kind| %>
+      <div class="pe-field">
+        <label><%= attr.to_s.humanize %></label>
+
+        <% value = record.public_send(attr) %>
+
+        <% case kind
+           when :text %>
+             <%= text_area_tag "record[#{attr}]", value, rows: 3, class: "pe-input" %>
+        <% when :date %>
+             <%= date_field_tag "record[#{attr}]", value, class: "pe-input" %>
+        <% when :url %>
+             <%= url_field_tag "record[#{attr}]", value, class: "pe-input" %>
+        <% else %>
+             <%= text_field_tag "record[#{attr}]", value, class: "pe-input" %>
+        <% end %>
+      </div>
+    <% end %>
+
+    <div class="pe-actions">
+      <button class="pe-btn" type="submit">Save</button>
+    </div>
+  <% end %>
+<% else %>
+  <div class="pe-readonly">
+    <dl>
+      <% fields.each do |attr, _kind| %>
+        <div class="pe-row">
+          <dt><%= attr.to_s.humanize %></dt>
+          <dd>
+            <% val = record.public_send(attr) %>
+            <% if val.blank? %>
+              <span class="pe-subtle">—</span>
+            <% else %>
+              <%= val %>
+            <% end %>
+          </dd>
+        </div>
+      <% end %>
+    </dl>
+  </div>
+<% end %>
+
