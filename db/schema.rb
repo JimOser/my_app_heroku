@@ -87,13 +87,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_17_031106) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "singers", force: :cascade do |t|
-    t.string "name"
-    t.text "bio"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "songs", force: :cascade do |t|
     t.string "title"
     t.date "released_on"
@@ -110,5 +103,5 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_17_031106) do
   add_foreign_key "people_roles", "people"
   add_foreign_key "people_roles", "roles"
   add_foreign_key "podcasts", "people"
-  add_foreign_key "songs", "singers"
+  add_foreign_key "songs", "people", column: "singer_id"
 end
