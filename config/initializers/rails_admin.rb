@@ -1,5 +1,6 @@
 # config/initializers/rails_admin.rb
 RailsAdmin.config do |config|
+  config.asset_source = :sprockets
   config.model 'Person' do
     edit do
       field :name
