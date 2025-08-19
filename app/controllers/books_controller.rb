@@ -16,7 +16,7 @@ class BooksController < ApplicationController
     if @book.save
       redirect_to @book, notice: "Book created successfully."
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -26,7 +26,7 @@ class BooksController < ApplicationController
     if @book.update(book_params)
       redirect_to @book, notice: "Book updated successfully."
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -42,7 +42,9 @@ class BooksController < ApplicationController
   end
 
   def book_params
-    params.require(:book).permit(:title, :url, :published_on, :person_id, :status)
-  end
+  params.require(:book).permit(:title, :url, :published_on, :status, author_ids: [])
+end
+
+
 end
 
