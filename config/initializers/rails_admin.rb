@@ -4,12 +4,6 @@ RailsAdmin.config do |config|
     edit do
       field :name
       field :bio
-      field :roles do
-        help 'Select one or more roles'
-        associated_collection_scope do
-          Proc.new { |scope| scope.order(:name) }
-        end
-      end
       # Do NOT define field :role_names here
     end
 
@@ -20,5 +14,25 @@ RailsAdmin.config do |config|
       end
     end
   end
+  config.model 'Book' do
+    edit do
+      field :title
+      field :url
+      field :published_on
+      field :status
+      field :author_ids, :enum do
+        label "Authors"
+        multiple true
+        enum { Person.order(:name).pluck(:name, :id) }
+      end
+    end
+    list do
+      field :title
+      field :authors do
+        pretty_value { bindings[:object].authors.pluck(:name).join(', ') }
+      end
+    end
+  end
 end
+
 

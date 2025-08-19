@@ -1,2 +1,45 @@
-<h1>Books#show</h1>
-<p>Find me in app/views/books/show.html.erb</p>
+<!-- app/views/books/show.html.erb -->
+<h1><%= @book.title.presence || "Untitled" %></h1>
+
+<dl style="margin: 1rem 0;">
+  <div style="display:grid;grid-template-columns:10ch 1fr;gap:.5rem;">
+    <dt><strong>URL</strong></dt>
+    <dd>
+      <% if @book.url.present? %>
+        <%= link_to @book.url, @book.url, target: "_blank", rel: "noopener" %>
+      <% else %>
+        — 
+      <% end %>
+    </dd>
+
+    <dt><strong>Published</strong></dt>
+    <dd><%= @book.published_on&.to_s || "—" %></dd>
+
+    <dt><strong>Status</strong></dt>
+    <dd><%= @book.status.presence || "—" %></dd>
+
+    <dt><strong>Authors</strong></dt>
+    <dd>
+      <% if @book.authors.any? %>
+        <%= safe_join(@book.authors.map { |p| link_to p.name, person_path(p) }, ", ".html_safe) %>
+      <% else %>
+        —
+      <% end %>
+    </dd>
+  </div>
+</dl>
+
+<p style="margin-top:1rem;">
+  <%= link_to "Edit", edit_book_path(@book) %> |
+  <%= link_to "Back to Books", books_path %>
+</p>
+
+<hr style="margin:1rem 0;">
+
+<!-- Optional: show credit rows for debugging while migrating -->
+<%# Remove this block later if you don't want to expose raw credits %>
+<details>
+  <summary>Debug: Credits</summary>
+  <pre><%= @book.credits.includes(:person, :role).map { |c| "#{c.role.name}: #{c.person.name}" }.join("\n") %></pre>
+</details>
+

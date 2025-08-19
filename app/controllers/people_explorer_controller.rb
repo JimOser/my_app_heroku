@@ -3,8 +3,11 @@ class PeopleExplorerController < ApplicationController
   before_action :forbid_in_production_on_update!, only: :update
 
   def index
-    # Now that associations are correct, this eager-load is fine
-    @people = Person.includes(:books, :songs, podcasts: :episodes).order(:name)
+    @people = Person
+      .includes(:authored_books)
+      .includes(:songs)
+      .includes(podcasts: :episodes)
+      .order(:name)
   end
 
   def update

@@ -1,5 +1,8 @@
 <h1>Books</h1>
 <%= link_to 'New Book', new_book_path %>
 
-<%= render 'shared/list', collection: @books, display_method: :title, extra_info: ->(b){ "#{display_person_link(b.person)} - #{b.status}" } %>
+<%= render 'shared/list',
+           collection: @books,
+           display_method: :title,
+           extra_info: ->(b){ safe_join(b.authors.map { |p| display_person_link(p) }, ', '.html_safe) } %>
 

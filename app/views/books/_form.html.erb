@@ -1,21 +1,36 @@
 <%= form_with(model: @book) do |f| %>
+  <p>
   <%= render 'shared/errors', object: @book %>
+  </p>
+  <p>
+    <%= f.label :title %><br>
+    <%= f.text_field :title %>
+  </p>
 
-  <%= f.label :title %>
-  <%= f.text_field :title %><br>
+  <p>
+    <%= f.label :url %><br>
+    <%= f.url_field :url %>
+  </p>
 
-  <%= f.label :url %>
-  <%= f.text_field :url %><br>
+  <p>
+    <%= f.label :published_on %><br>
+    <%= f.date_field :published_on %>
+  </p>
 
-  <%= f.label :published_on %>
-  <%= f.date_field :published_on %><br>
+  <p>
+    <%= f.label :status %><br>
+    <%= f.text_field :status %>
+  </p>
 
-  <%= f.label :person_id, "Author" %>
-  <%= f.collection_select :person_id, Person.all, :id, :name %><br>
+  <p>
+  <%= f.label :author_ids, "Authors" %><br>
+  <%= f.collection_check_boxes :author_ids, Person.order(:name), :id, :name do |b| %>
+    <label style="display:block; margin:2px 0;">
+      <%= b.check_box %> <%= b.text %>
+    </label>
+  <% end %>
+  </p>
 
-  <%= f.label :status %>
-  <%= f.select :status, Book.statuses.keys.map { |s| [s.humanize, s] } %><br>
-
-  <%= f.submit %>
+  <p><%= f.submit %></p>
 <% end %>
 
