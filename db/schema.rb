@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_08_18_233539) do
+ActiveRecord::Schema[7.1].define(version: 2025_08_20_090007) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -18,11 +18,9 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_18_233539) do
     t.string "title", null: false
     t.string "url"
     t.date "published_on"
-    t.bigint "author_id"
     t.integer "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["author_id"], name: "index_books_on_author_id"
     t.check_constraint "char_length(btrim(title::text)) > 0", name: "books_title_not_blank"
   end
 
@@ -33,7 +31,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_18_233539) do
     t.bigint "creditable_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["creditable_type", "creditable_id"], name: "index_credits_on_creditable"
+    t.index ["creditable_type", "creditable_id", "person_id", "role_id"], name: "idx_unique_credit", unique: true
+    t.index ["creditable_type", "creditable_id"], name: "index_credits_on_creditable_type_and_creditable_id"
     t.index ["person_id"], name: "index_credits_on_person_id"
     t.index ["role_id"], name: "index_credits_on_role_id"
   end
@@ -47,6 +46,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_18_233539) do
     t.date "released_on"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["podcast_id", "number"], name: "index_episodes_on_podcast_id_and_number", unique: true
     t.index ["podcast_id"], name: "index_episodes_on_podcast_id"
   end
 
@@ -57,24 +57,12 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_18_233539) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "people_roles", force: :cascade do |t|
-    t.bigint "person_id", null: false
-    t.bigint "role_id", null: false
-    t.boolean "main_author", default: false, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["person_id", "role_id"], name: "index_people_roles_on_person_id_and_role_id", unique: true
-    t.index ["person_id"], name: "index_people_roles_on_person_id"
-    t.index ["role_id"], name: "index_people_roles_on_role_id"
-  end
-
   create_table "podcasts", force: :cascade do |t|
-    t.string "title"
+    t.string "title", null: false
     t.text "description"
-    t.bigint "person_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["person_id"], name: "index_podcasts_on_person_id"
+    t.check_constraint "char_length(btrim(title::text)) > 0", name: "podcasts_title_not_blank"
   end
 
   create_table "posts", force: :cascade do |t|
@@ -84,39 +72,24 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_18_233539) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "reviews", force: :cascade do |t|
-    t.text "content"
-    t.integer "rating"
-    t.string "reviewable_type", null: false
-    t.bigint "reviewable_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["reviewable_type", "reviewable_id"], name: "index_reviews_on_reviewable"
-  end
-
   create_table "roles", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_roles_on_name", unique: true
   end
 
   create_table "songs", force: :cascade do |t|
-    t.string "title"
+    t.string "title", null: false
     t.date "released_on"
     t.string "youtube_url"
     t.string "spotify_url"
-    t.bigint "singer_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["singer_id"], name: "index_songs_on_singer_id"
+    t.check_constraint "char_length(btrim(title::text)) > 0", name: "songs_title_not_blank"
   end
 
-  add_foreign_key "books", "people", column: "author_id"
   add_foreign_key "credits", "people"
   add_foreign_key "credits", "roles"
   add_foreign_key "episodes", "podcasts"
-  add_foreign_key "people_roles", "people"
-  add_foreign_key "people_roles", "roles"
-  add_foreign_key "podcasts", "people"
-  add_foreign_key "songs", "people", column: "singer_id"
 end

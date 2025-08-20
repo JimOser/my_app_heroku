@@ -1,25 +1,12 @@
 Rails.application.routes.draw do
-  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
-  get "up" => "rails/health#show", as: :rails_health_check
-
-  # Defines the root path route ("/")
-  # root "posts#index"
-  root 'welcome#index'
-
   resources :people
   resources :books
-  resources :podcasts do
-    resources :episodes
-  end
   resources :songs
+  resources :podcasts do
+    resources :episodes, only: [:new, :create, :edit, :update, :destroy]
+  end
 
-  #ChatGPT
-  # People Explorer (read-only in production; editable in development)
-  get  "/people_explorer",            to: "people_explorer#index",  as: :people_explorer
-  patch "/people_explorer/:type/:id", to: "people_explorer#update", as: :people_explorer_update
+  get "/people_explorer", to: "people_explorer#index", as: :people_explorer
 
+  root "people_explorer#index"
 end

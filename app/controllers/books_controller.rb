@@ -2,7 +2,7 @@ class BooksController < ApplicationController
   before_action :set_book, only: %i[show edit update destroy]
 
   def index
-    @books = Book.all
+    @books = Book.order(created_at: :desc)
   end
 
   def show; end
@@ -11,8 +11,10 @@ class BooksController < ApplicationController
     @book = Book.new
   end
 
+  def edit; end
+
   def create
-    @book = Book.new(book_params)
+    @book = Book.new(book_params.to_h)
     if @book.save
       redirect_to @book, notice: "Book created successfully."
     else
@@ -20,10 +22,8 @@ class BooksController < ApplicationController
     end
   end
 
-  def edit; end
-
   def update
-    if @book.update(book_params)
+    if @book.update(book_params.to_h)
       redirect_to @book, notice: "Book updated successfully."
     else
       render :edit, status: :unprocessable_entity
@@ -42,9 +42,6 @@ class BooksController < ApplicationController
   end
 
   def book_params
-  params.require(:book).permit(:title, :url, :published_on, :status, author_ids: [])
+    params.require(:book).permit(:title, :url, :published_on, :status, author_ids: [])
+  end
 end
-
-
-end
-

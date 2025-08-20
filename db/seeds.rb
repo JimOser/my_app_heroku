@@ -1,65 +1,71 @@
-# db/seeds.rb
+puts "➡️ Seeding roles..."
+%w[author singer host].each { |r| Role.find_or_create_by!(name: r) }
 
-puts "➡️ Seeding Roles..."
-author_role = Role.find_or_create_by!(name: "author")
-singer_role = Role.find_or_create_by!(name: "singer")
-host_role   = Role.find_or_create_by!(name: "host")
+puts "➡️ Creating people..."
+pl = Person.find_or_create_by!(name: "P.L. Travers") { |p| p.bio = "Author of Mary Poppins." }
 
-puts "➡️ Creating People..."
-walter = Person.find_or_create_by!(name: "Walter Freiburg") { |p| p.bio = "Writer and podcaster" }
-adele  = Person.find_or_create_by!(name: "Adele")           { |p| p.bio = "Famous singer" }
-
-puts "➡️ Linking People ↔ Roles (legacy PeopleRole join, idempotent)..."
-pr = PeopleRole.find_or_initialize_by(person: walter, role: author_role)
-pr.main_author = true
-pr.save!
-PeopleRole.find_or_create_by!(person: walter, role: host_role)
-PeopleRole.find_or_create_by!(person: adele,  role: singer_role)
-
-puts "➡️ Creating Books..."
-book = Book.find_or_create_by!(title: "Rails and Beyond")
-book.update!(
-  url:           "https://walterfreiburg.com/rails",
-  published_on:  Date.new(2023, 5, 1),
-  # status: set this only if you have an enum you want to exercise, e.g. :reading
-  # status: :reading,
-  author:        walter
-)
-
-puts "➡️ Creating Podcasts..."
-pod = Podcast.find_or_create_by!(title: "Tech Talks with Walter")
-pod.update!(
-  description: "Conversations about programming and technology",
-  person:      walter
-)
-
-puts "➡️ Creating Episodes..."
-Episode.find_or_create_by!(podcast: pod, number: 1) do |e|
-  e.title       = "Rails Deep Dive"
-  e.url         = "https://example.com/ep1"
-  e.youtube_url = "https://youtube.com/ep1"
-  e.released_on = Date.new(2024, 1, 1)
+walter = Person.find_or_create_by!(name: "Walter Freiberg") do |p|
+  p.bio = <<~BIO.squish
+    Mi nombre es Walter Freiberg y nací en Buenos Aires, Argentina. Me gusta aprender todo tipo de cosas: idiomas, música, escritura y otras cosas. Lo que más me fascina es el proceso de aprendizaje: es decir, «aprender a aprender». Me encanta compartir mis conocimientos sobre el proceso de aprendizaje y ayudar a otras personas a aprender mejor. Mi propósito es empoderar a las personas para que alcancen su potencial y aspiraciones de aprendizaje.
+    Website: https://poderaprender.com/ • YouTube: https://www.youtube.com/@poder-aprender
+  BIO
 end
 
-Episode.find_or_create_by!(podcast: pod, number: 2) do |e|
-  e.title       = "Ruby Magic Tricks"
-  e.released_on = Date.new(2024, 2, 1)
+shakira = Person.find_or_create_by!(name: "Shakira") { |p| p.bio = "Singer." }
+carlos  = Person.find_or_create_by!(name: "Carlos Vives") { |p| p.bio = "Singer." }
+
+karo = Person.find_or_create_by!(name: "Karo Martinez") do |p|
+  p.bio = <<~BIO.squish
+    When I was six, I got a book about the 100 wonders of the world... Today, I teach the language that changed my life.
+    Website: https://www.espanolautomatico.com/ • YouTube: https://www.youtube.com/c/EspanolAutomatico
+  BIO
 end
 
-puts "➡️ Creating Songs..."
-song1 = Song.find_or_create_by!(title: "Hello")
-song1.update!(
-  released_on: Date.new(2015, 10, 23),
-  youtube_url: "https://youtube.com/hello",
-  spotify_url: "https://spotify.com/hello",
-  singer:      adele
-)
+puts "➡️ Books via Credits..."
+mary = Book.find_or_create_by!(title: "Mary Poppins"); mary.author_ids = [pl.id]; mary.save!
+ana  = Book.find_or_create_by!(title: "Spanish Novels: Ana, Estudiante");  ana.author_ids  = [walter.id]; ana.save!
+futb = Book.find_or_create_by!(title: "Spanish Novels: Fútbol en Madrid"); futb.author_ids = [walter.id]; futb.save!
+tsu  = Book.find_or_create_by!(title: "Tsunami");                           tsu.author_ids  = [walter.id]; tsu.save!
+b1   = Book.find_or_create_by!(title: "30 días para entender español hablado"); b1.author_ids = [karo.id]; b1.save!
+b2   = Book.find_or_create_by!(title: "Mi vida en Barcelona");                 b2.author_ids = [karo.id]; b2.save!
 
-song2 = Song.find_or_create_by!(title: "Rolling in the Deep")
-song2.update!(
-  released_on: Date.new(2010, 11, 29),
-  singer:      adele
-)
+puts "➡️ Songs via Credits..."
+ea   = Song.find_or_create_by!(title: "Estoy Aquí"); ea.singer_ids = [shakira.id]; ea.save!
+sw   = Song.find_or_create_by!(title: "She Wolf");   sw.singer_ids = [shakira.id]; sw.save!
+bici = Song.find_or_create_by!(title: "La Bicicleta"); bici.youtube_url = "https://www.youtube.com/watch?v=-UV0QGLmYys"; bici.singer_ids = [shakira.id, carlos.id]; bici.save!
 
-puts "✅ Seeding complete!"
+puts "➡️ Podcast via Credits..."
+pod = Podcast.find_or_create_by!(title: "Poder aprender")
+pod.update!(description: "Podcast de Walter Freiberg sobre aprendizaje (poderaprender.com).")
+pod.host_ids = [walter.id]; pod.save!
 
+puts "➡️ Creating episodes..."
+# add_index :episodes, [:podcast_id, :number], unique: true
+
+episodes = [
+  { number: 100, title: "Hábitos para un aprendizaje continuo", url: "https://poderaprender.com/captivate-podcast/100-habitos-para-un-aprendizaje-continuo/", youtube_url: "https://www.youtube.com/watch?v=kW0LtPyVjcA" },
+  { number: 1, title: "Aprender idiomas a tu manera", url: "https://poderaprender.com/captivate-podcast/1-aprender-idiomas-a-tu-manera/", youtube_url: "https://www.youtube.com/watch?v=IcpAj7g0TaA" }
+]
+
+numbers = episodes.map { |e| e[:number] }
+existing_created_at =
+  Episode.where(podcast_id: pod.id, number: numbers)
+         .pluck(:number, :created_at)
+         .to_h
+
+rows = episodes.map do |e|
+  {
+    podcast_id:  pod.id,
+    number:      e[:number],
+    title:       e[:title],
+    url:         e[:url],
+    youtube_url: e[:youtube_url],
+    # Preserve created_at if the row already exists; set it on insert
+    created_at:  existing_created_at[e[:number]] || Time.current,
+    updated_at:  Time.current
+  }
+end
+
+Episode.upsert_all(rows, unique_by: %i[podcast_id number])
+
+puts "✅ Seeding complete."

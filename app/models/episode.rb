@@ -1,5 +1,3 @@
-# app/models/episode.rb
 class Episode < ApplicationRecord
-  belongs_to :podcast, inverse_of: :episodes
+  belongs_to :podcast
 end
-

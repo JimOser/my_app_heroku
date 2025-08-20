@@ -2,7 +2,7 @@ class SongsController < ApplicationController
   before_action :set_song, only: %i[show edit update destroy]
 
   def index
-    @songs = Song.all
+    @songs = Song.order(created_at: :desc)
   end
 
   def show; end
@@ -11,22 +11,22 @@ class SongsController < ApplicationController
     @song = Song.new
   end
 
+  def edit; end
+
   def create
-    @song = Song.new(song_params)
+    @song = Song.new(song_params.to_h)
     if @song.save
       redirect_to @song, notice: "Song created successfully."
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
-  def edit; end
-
   def update
-    if @song.update(song_params)
+    if @song.update(song_params.to_h)
       redirect_to @song, notice: "Song updated successfully."
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -42,7 +42,6 @@ class SongsController < ApplicationController
   end
 
   def song_params
-    params.require(:song).permit(:title, :released_on, :youtube_url, :spotify_url, :person_id)
+    params.require(:song).permit(:title, :released_on, :youtube_url, :spotify_url, singer_ids: [])
   end
 end
-

@@ -6,13 +6,13 @@ module Creditable
     has_many :people,  through: :credits
     accepts_nested_attributes_for :credits, allow_destroy: true
 
-    # When a record is newly created, apply any queued role IDs after it has an ID
+    # Apply any queued *_ids after the record is committed
     after_commit :_apply_pending_credit_roles
   end
 
   class_methods do
-    # Declare role collections + *_ids writers.
-    # Example: credit_roles :author
+    # Declare role collections + *_ids readers/writers.
+    # Example: credit_roles :author  => adds #authors, #author_ids, #author_ids=, #author_credits
     def credit_roles(*roles)
       roles.each do |r|
         has_many :"#{r}_credits",
@@ -51,4 +51,3 @@ module Creditable
     (ids - existing).each { |pid| credits.create!(person_id: pid, role: role) }
   end
 end
-

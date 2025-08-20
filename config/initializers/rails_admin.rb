@@ -1,20 +1,16 @@
-# config/initializers/rails_admin.rb
 RailsAdmin.config do |config|
   config.asset_source = :sprockets
+
   config.model 'Person' do
     edit do
       field :name
       field :bio
-      # Do NOT define field :role_names here
     end
-
     list do
       field :name
-      field :roles do
-        pretty_value { bindings[:object].roles.map(&:name).join(', ') }
-      end
     end
   end
+
   config.model 'Book' do
     edit do
       field :title
@@ -34,6 +30,42 @@ RailsAdmin.config do |config|
       end
     end
   end
+
+  config.model 'Song' do
+    edit do
+      field :title
+      field :released_on
+      field :youtube_url
+      field :spotify_url
+      field :singer_ids, :enum do
+        label "Singers"
+        multiple true
+        enum { Person.order(:name).pluck(:name, :id) }
+      end
+    end
+    list do
+      field :title
+      field :singers do
+        pretty_value { bindings[:object].singers.pluck(:name).join(', ') }
+      end
+    end
+  end
+
+  config.model 'Podcast' do
+    edit do
+      field :title
+      field :description
+      field :host_ids, :enum do
+        label "Hosts"
+        multiple true
+        enum { Person.order(:name).pluck(:name, :id) }
+      end
+    end
+    list do
+      field :title
+      field :hosts do
+        pretty_value { bindings[:object].hosts.pluck(:name).join(', ') }
+      end
+    end
+  end
 end
-
-

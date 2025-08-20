@@ -1,6 +1,8 @@
-# app/models/podcast.rb
 class Podcast < ApplicationRecord
-  belongs_to :person,  inverse_of: :podcasts
-  has_many   :episodes, dependent: :destroy
-end
+  include Creditable
+  credit_roles :host
 
+  has_many :episodes, dependent: :destroy
+
+  validates :title, presence: true
+end
