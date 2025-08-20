@@ -5,8 +5,9 @@ puts "➡️ Creating people..."
 pl = Person.find_or_create_by!(name: "P.L. Travers") { |p| p.bio = "Author of Mary Poppins." }
 
 walter = Person.find_or_create_by!(name: "Walter Freiberg") do |p|
-  p.bio = <<~BIO.squish
+  p.bio = <<~BIO
     Mi nombre es Walter Freiberg y nací en Buenos Aires, Argentina. Me gusta aprender todo tipo de cosas: idiomas, música, escritura y otras cosas. Lo que más me fascina es el proceso de aprendizaje: es decir, «aprender a aprender». Me encanta compartir mis conocimientos sobre el proceso de aprendizaje y ayudar a otras personas a aprender mejor. Mi propósito es empoderar a las personas para que alcancen su potencial y aspiraciones de aprendizaje.
+
     Website: https://poderaprender.com/ • YouTube: https://www.youtube.com/@poder-aprender
   BIO
 end
@@ -15,9 +16,23 @@ shakira = Person.find_or_create_by!(name: "Shakira") { |p| p.bio = "Singer." }
 carlos  = Person.find_or_create_by!(name: "Carlos Vives") { |p| p.bio = "Singer." }
 
 karo = Person.find_or_create_by!(name: "Karo Martinez") do |p|
-  p.bio = <<~BIO.squish
+  p.bio = <<~BIO
     When I was six, I got a book about the 100 wonders of the world... Today, I teach the language that changed my life.
+
     Website: https://www.espanolautomatico.com/ • YouTube: https://www.youtube.com/c/EspanolAutomatico
+  BIO
+end
+
+alexandra = Person.find_or_create_by!(name: "Alexandra Castrillon Gomez") do |p|
+  p.bio = <<~BIO
+    Alexandra Castrillón Gómez (Colombia, 1978).
+
+    Nómada en constante exploración. Alexandra ha vivido en Medellín, Bogotá, Bilbao, Ciudad de México y Miami, y aunque estos son los sitios a los que alguna vez ha llamado «hogar», son los dos viajes alrededor del mundo y los múltiples recorridos que ha hecho en los cinco continentes, los que le han permitido tener la amplitud de visión y mentalidad que les transmite a los lectores a través de sus novelas.
+
+
+Ingeniera de Sistemas, adelantó estudios de posgrado en Hermenéutica Literaria y trabajó durante más de veinte años en mercadeo, actualmente se dedica por completo a la escritura.
+
+Su primera novela, Me muero por vivir (2019), tiene como temas centrales el amor y la enfermedad que se viven a través de un relato por el Sur de África y el sudeste asiático, ha estado en la lista de más vendidos de Amazon en varias oportunidades, fue seleccionada en 2020 como una de las veinte obras autopublicadas para participar en la Feria Internacional del Libro de Bogotá y ha sido galardonada con el Premio Isabel Allende al libro más inspirador de ficción de International Latino Book Awards (2021 – medalla de plata).
   BIO
 end
 
@@ -28,6 +43,12 @@ futb = Book.find_or_create_by!(title: "Spanish Novels: Fútbol en Madrid"); futb
 tsu  = Book.find_or_create_by!(title: "Tsunami");                           tsu.author_ids  = [walter.id]; tsu.save!
 b1   = Book.find_or_create_by!(title: "30 días para entender español hablado"); b1.author_ids = [karo.id]; b1.save!
 b2   = Book.find_or_create_by!(title: "Mi vida en Barcelona");                 b2.author_ids = [karo.id]; b2.save!
+b1   = Book.find_or_create_by!(title: "Me muero por vivir"); b1.author_ids = [alexandra.id]; b1.save!
+b2   = Book.find_or_create_by!(title: "Detrás de mi nombre"); b2.author_ids = [alexandra.id]; b2.save!
+b3   = Book.find_or_create_by!(title: "Entre redes"); b3.author_ids = [alexandra.id]; b3.save!
+b4   = Book.find_or_create_by!(title: "Unos minutos de amnesia"); b4.author_ids = [alexandra.id]; b4.save!
+b5   = Book.find_or_create_by!(title: "Llena eres de culpa"); b5.author_ids = [alexandra.id]; b5.save!
+b6   = Book.find_or_create_by!(title: "Una sola línea"); b6.author_ids = [alexandra.id]; b6.save!
 
 puts "➡️ Songs via Credits..."
 ea   = Song.find_or_create_by!(title: "Estoy Aquí"); ea.singer_ids = [shakira.id]; ea.save!

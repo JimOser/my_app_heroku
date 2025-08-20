@@ -22,8 +22,9 @@
       <article id="person-<%= person.id %>" class="pe-card pe-person">
         <header class="pe-card-header">
           <h2><%= person.name %></h2>
+
           <% if person.bio.present? %>
-            <p class="pe-subtle"><%= person.bio %></p>
+            <%= simple_format(person.bio, { class: "pe-subtle" }, sanitize: true) %>
           <% end %>
         </header>
 
