@@ -1,5 +1,10 @@
 <h1>Songs</h1>
-<%= link_to 'New Song', new_song_path %>
-
-<%= render 'shared/list', collection: @songs, display_method: :title, extra_info: ->(s){ display_person_link(s.person) } %>
-
+<p><%= link_to 'New Song', new_song_path %></p>
+<ul>
+  <% @songs.each do |s| %>
+    <li>
+      <%= link_to s.title, s %>
+      <% if s.singers.any? %> — <%= s.singers.map(&:name).join(", ") %><% end %>
+    </li>
+  <% end %>
+</ul>

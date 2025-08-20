@@ -1,0 +1,34 @@
+<%= form_with(model: @song) do |f| %>
+  <%= render 'shared/errors', object: @song %>
+
+  <p>
+    <%= f.label :title %><br>
+    <%= f.text_field :title %>
+  </p>
+
+  <p>
+    <%= f.label :released_on %><br>
+    <%= f.date_field :released_on %>
+  </p>
+
+  <p>
+    <%= f.label :youtube_url %><br>
+    <%= f.url_field :youtube_url %>
+  </p>
+
+  <p>
+    <%= f.label :spotify_url %><br>
+    <%= f.url_field :spotify_url %>
+  </p>
+
+  <p>
+    <%= f.label :singer_ids, "Singers" %><br>
+    <%= f.collection_check_boxes :singer_ids, Person.order(:name), :id, :name do |b| %>
+      <label style="display:block; margin:2px 0;">
+        <%= b.check_box %> <%= b.text %>
+      </label>
+    <% end %>
+  </p>
+
+  <p><%= f.submit %></p>
+<% end %>

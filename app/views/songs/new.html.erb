@@ -1,2 +1,3 @@
-<h1>Songs#new</h1>
-<p>Find me in app/views/songs/new.html.erb</p>
+<h1>New Song</h1>
+<%= render "form", song: @song %>
+<p><%= link_to "Back", songs_path %></p>

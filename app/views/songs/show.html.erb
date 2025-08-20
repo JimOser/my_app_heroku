@@ -1,9 +1,27 @@
-<h1><%= @song.title %></h1>
-<p>Singer: <%= display_person_link(@song.person) %></p>
-<p>Released on: <%= @song.released_on %></p>
+<h1><%= @song.title.presence || "Untitled" %></h1>
+
 <p>
-  <%= link_to "YouTube", @song.youtube_url, target: "_blank" %> |
-  <%= link_to "Spotify", @song.spotify_url, target: "_blank" %>
+  Singers:
+  <% if @song.singers.any? %>
+    <%= @song.singers.map(&:name).join(", ") %>
+  <% else %>
+    —
+  <% end %>
 </p>
 
+<p>Released on: <%= @song.released_on.presence || "—" %></p>
 
+<p>
+  <% if @song.youtube_url.present? %>
+    <%= link_to "YouTube", @song.youtube_url, target: "_blank", rel: "noopener" %>
+  <% end %>
+  <% if @song.spotify_url.present? %>
+    <% if @song.youtube_url.present? %> | <% end %>
+    <%= link_to "Spotify", @song.spotify_url, target: "_blank", rel: "noopener" %>
+  <% end %>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_song_path(@song) %> |
+  <%= link_to "Back to Songs", songs_path %>
+</p>

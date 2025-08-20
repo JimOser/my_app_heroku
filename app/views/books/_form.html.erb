@@ -1,7 +1,6 @@
 <%= form_with(model: @book) do |f| %>
-  <p>
   <%= render 'shared/errors', object: @book %>
-  </p>
+
   <p>
     <%= f.label :title %><br>
     <%= f.text_field :title %>
@@ -23,14 +22,13 @@
   </p>
 
   <p>
-  <%= f.label :author_ids, "Authors" %><br>
-  <%= f.collection_check_boxes :author_ids, Person.order(:name), :id, :name do |b| %>
-    <label style="display:block; margin:2px 0;">
-      <%= b.check_box %> <%= b.text %>
-    </label>
-  <% end %>
+    <%= f.label :author_ids, "Authors" %><br>
+    <%= f.collection_check_boxes :author_ids, Person.order(:name), :id, :name do |b| %>
+      <label style="display:block; margin:2px 0;">
+        <%= b.check_box %> <%= b.text %>
+      </label>
+    <% end %>
   </p>
 
   <p><%= f.submit %></p>
 <% end %>
-

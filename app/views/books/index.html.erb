@@ -1,8 +1,10 @@
 <h1>Books</h1>
-<%= link_to 'New Book', new_book_path %>
-
-<%= render 'shared/list',
-           collection: @books,
-           display_method: :title,
-           extra_info: ->(b){ safe_join(b.authors.map { |p| display_person_link(p) }, ', '.html_safe) } %>
-
+<p><%= link_to 'New Book', new_book_path %></p>
+<ul>
+  <% @books.each do |b| %>
+    <li>
+      <%= link_to b.title, b %>
+      <% if b.authors.any? %> — <%= b.authors.map(&:name).join(", ") %><% end %>
+    </li>
+  <% end %>
+</ul>

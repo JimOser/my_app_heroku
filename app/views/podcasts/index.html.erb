@@ -1,5 +1,10 @@
 <h1>Podcasts</h1>
-<%= link_to 'New Podcast', new_podcast_path %>
-
-<%= render 'shared/list', collection: @podcasts, display_method: :title, extra_info: ->(p){ display_person_link(p.person) } %>
-
+<p><%= link_to 'New Podcast', new_podcast_path %></p>
+<ul>
+  <% @podcasts.each do |p| %>
+    <li>
+      <%= link_to p.title, p %>
+      <% if p.hosts.any? %> — <%= p.hosts.map(&:name).join(", ") %><% end %>
+    </li>
+  <% end %>
+</ul>

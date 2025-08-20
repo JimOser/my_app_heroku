@@ -1,3 +1,34 @@
-<h2>Episodes</h2>
-<%= render 'episodes/list', episodes: @podcast.episodes %>
+<h1><%= @podcast.title.presence || "Untitled" %></h1>
 
+<p><%= simple_format(@podcast.description.to_s) %></p>
+
+<p>
+  Hosts:
+  <% if @podcast.hosts.any? %>
+    <%= @podcast.hosts.map(&:name).join(", ") %>
+  <% else %>
+    —
+  <% end %>
+</p>
+
+<h3>Episodes</h3>
+<% if @podcast.episodes.any? %>
+  <ul>
+    <% @podcast.episodes.order(:number).each do |ep| %>
+      <li>
+        #<%= ep.number %> <br>
+        <%= ep.title.presence || "Untitled" %><br>
+        <%= link_to ep.youtube_url, ep.youtube_url %><br>
+        <%= link_to ep.url, ep.url %> <br> 
+      </li>
+      <br>
+    <% end %>
+  </ul>
+<% else %>
+  <p>—</p>
+<% end %>
+
+<p>
+  <%= link_to "Edit", edit_podcast_path(@podcast) %> |
+  <%= link_to "Back to Podcasts", podcasts_path %>
+</p>

@@ -1,0 +1,24 @@
+<%= form_with(model: @podcast) do |f| %>
+  <%= render 'shared/errors', object: @podcast %>
+
+  <p>
+    <%= f.label :title %><br>
+    <%= f.text_field :title %>
+  </p>
+
+  <p>
+    <%= f.label :description %><br>
+    <%= f.text_area :description %>
+  </p>
+
+  <p>
+    <%= f.label :host_ids, "Hosts" %><br>
+    <%= f.collection_check_boxes :host_ids, Person.order(:name), :id, :name do |b| %>
+      <label style="display:block; margin:2px 0;">
+        <%= b.check_box %> <%= b.text %>
+      </label>
+    <% end %>
+  </p>
+
+  <p><%= f.submit %></p>
+<% end %>

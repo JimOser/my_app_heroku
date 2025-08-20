@@ -1,2 +1,3 @@
-<h1>Podcasts#new</h1>
-<p>Find me in app/views/podcasts/new.html.erb</p>
+<h1>New Podcast</h1>
+<%= render "form", podcast: @podcast %>
+<p><%= link_to "Back", podcasts_path %></p>
