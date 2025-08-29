@@ -42,7 +42,8 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should destroy book" do
-    temp_book = Book.create!(title: "Temp", url: "http://example.com/temp", published_on: Date.today, author: people(:one))
+#    temp_book = Book.create!(title: "Temp", url: "http://example.com/temp", published_on: Date.today, author: people(:one))
+    temp_book = Book.create!(title: "Temp", url: "http://example.com/temp", published_on: Date.today)
     assert_difference("Book.count", -1) do
       delete book_url(temp_book)
     end

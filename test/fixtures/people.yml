@@ -1,0 +1,17 @@
+one:
+  name: "Jim Oser"
+#  titulo: "El Quijote"
+#  paginas: "1200"
+#  descripcion: "La obra maestra de Cervantes sobre un hidalgo que se vuelve loco leyendo libros de caballería."
+#  editorial: "Editorial Planeta"
+#  kindle: true
+#  audible: false
+
+two:
+  name: "Dr. Seus"
+#  titulo: "Cien años de soledad"
+#  paginas: "471"
+#  descripcion: "La saga de la familia Buendía en el pueblo ficticio de Macondo."
+#  editorial: "Editorial Sudamericana"
+#  kindle: true
+#  audible: true
